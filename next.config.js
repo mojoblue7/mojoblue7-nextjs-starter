@@ -6,13 +6,26 @@ const withImages = require('next-images');
 const path = require('path');
 
 const nextConfig = {
+  env: {},
+  webpack: null,
   reactStrictMode: true,
   swcMinify: true,
-  sassOPtions: {
+  sassOptions: {
     includePaths: [path.join(__dirname, 'styles')],
     prependData: `@import "styles/_variables.scss"; @import "styles/_mixins.scss";`,
   },
+  useFileSystemPublicRoutes: true,
+  generateBuildId: () => null,
+  generateEtags: true,
+  pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
+  configOrigin: 'default',
+  target: 'server',
+  compress: true,
+  compiler: {
+    removeConsole: true,
+  },
 };
+
 
 module.exports = withPlugins(
   [
@@ -21,6 +34,8 @@ module.exports = withPlugins(
       {
         pwa: {
           dest: 'public',
+          disable: process.env.NODE_ENV === 'development',
+          register: true,
         },
       },
     ],
